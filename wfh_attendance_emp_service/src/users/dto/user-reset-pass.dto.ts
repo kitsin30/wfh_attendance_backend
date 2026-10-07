@@ -3,13 +3,13 @@ import { IsString, IsNotEmpty } from 'class-validator';
 export class UserResetPassDto {
   @IsString()
   @IsNotEmpty()
-  userId: String;
+  userId: string;
 
   @IsString()
   @IsNotEmpty()
-  password: String;
+  password: string;
 
   @IsString()
   @IsNotEmpty()
-  newPassword: String;
+  newPassword: string;
 }

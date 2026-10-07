@@ -3,9 +3,13 @@ import { IsString, IsNotEmpty } from 'class-validator';
 export class UserCredDto {
   @IsString()
   @IsNotEmpty()
-  userId: String;
+  userId: string;
 
   @IsString()
   @IsNotEmpty()
-  password: String;
+  password: string;
+
+  @IsString()
+  @IsNotEmpty()
+  updUid: string;
 }

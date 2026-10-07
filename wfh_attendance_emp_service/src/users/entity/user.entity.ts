@@ -1,7 +1,7 @@
 import { Entity, Column, CreateDateColumn, UpdateDateColumn, PrimaryColumn } from "typeorm";
 
-@Entity('users')
-export class users {
+@Entity('USERS')
+export class UserEntity {
   @CreateDateColumn({
     name: 'CREATED_TMS',
     type: 'timestamp',
@@ -14,7 +14,7 @@ export class users {
     type: 'char',
     precision: 20
   })
-  updUid: String;
+  updUid: string;
 
   @UpdateDateColumn({
     name: 'UPDATED_TMS',
@@ -28,14 +28,14 @@ export class users {
     type: 'char',
     precision: 20
   })
-  userId: String;
+  userId: string;
 
   @Column({
     name: 'PASSWORD',
     type: 'varchar',
     precision: 255
   })
-  password: String;
+  password: string;
 
   @Column({
     name: 'RESET_PASS_FLG',
@@ -43,5 +43,5 @@ export class users {
     precision: 1,
     default: 'N'
   })
-  resetPassFlg: String;
+  resetPassFlg: string;
 }
