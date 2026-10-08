@@ -44,4 +44,12 @@ export class UserEntity {
     default: 'N'
   })
   resetPassFlg: string;
+
+  @Column({
+    name: 'USER_LEVEL',
+    type: 'char',
+    precision: 10
+  })
+  userLevel: string;
+
 }

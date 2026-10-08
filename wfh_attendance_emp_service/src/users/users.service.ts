@@ -130,7 +130,7 @@ export class UsersService {
       success: true,
       status: 'LOGIN_SUCCESS',
       message: 'Login successfully',
-      userId: user.userId,
+      userEntity: user,
     };
   }
 
