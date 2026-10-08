@@ -40,7 +40,7 @@ export class AttendanceService {
       if (error.code === 'ER_DUP_ENTRY') {
         throw new ConflictException('User already attend today');
       }
-      throw new InternalServerErrorException(`Failed to save attendance from user '${dto.userId}'`);
+      throw new InternalServerErrorException(`Failed to save attendance from user ${dto.userId}`);
     }
   }
 
@@ -58,7 +58,7 @@ export class AttendanceService {
     );
 
     if (result.affected === 0) {
-      throw new NotFoundException(`Record attendance not found for user id '${dto.userId}' not found`);
+      throw new NotFoundException(`Record attendance not found for user id ${dto.userId} not found`);
     }
 
     return {
@@ -76,7 +76,7 @@ export class AttendanceService {
     })
 
     if (attend === null) {
-      throw new NotFoundException(`Attendance for user id '${dto.userId}' for date '${dto.attendanceDate}' not found`);
+      throw new NotFoundException(`Attendance for user id ${dto.userId} for date ${dto.attendanceDate} not found`);
     }
     
     return attend;
@@ -93,7 +93,7 @@ export class AttendanceService {
   }
 
   async getSpecificAttendanceUserInDateRange (dto: AttendanceSpecificUserRange) {
-    const errMsg = `Attendance for user id '${dto.userIdList}' for range date between '${dto.attendanceDateStart}' and '${dto.attendanceDateEnd}' not found`;
+    const errMsg = `Attendance for user id ${dto.userIdList} for range date between ${dto.attendanceDateStart} and ${dto.attendanceDateEnd} not found`;
 
     const attend = await this.getAttendance(
       {
@@ -112,7 +112,7 @@ export class AttendanceService {
   }
 
   async getAllAttendanceForSpecificDate(dto: AttendanceDateSpecificDto) {
-    const errMsg = `All Attendance for date '${dto.attendanceDate}' not found`;
+    const errMsg = `All Attendance for date ${dto.attendanceDate} not found`;
 
     const attend = await this.getAttendance(
       {
@@ -129,7 +129,7 @@ export class AttendanceService {
   }
 
   async getAllAttendanceForRangeDate(dto: AttendanceListRange) {
-    const errMsg = `All Attendance for range date between '${dto.attendanceDateStart}' and '${dto.attendanceDateEnd}' not found`;
+    const errMsg = `All Attendance for range date between ${dto.attendanceDateStart} and ${dto.attendanceDateEnd} not found`;
     const attend = await this.getAttendance(
       {
         where: {

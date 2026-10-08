@@ -47,7 +47,7 @@ export class UsersService {
     const result = await this.userRepository.update(condUserEntity, currUserEntity);
 
     if (result.affected === 0) {
-      throw new NotFoundException(`user id '${currUserId}' not found`);
+      throw new NotFoundException(`user id ${currUserId} not found`);
     }
 
     return {
@@ -82,7 +82,7 @@ export class UsersService {
 
     const isPassCorrect = await this.passwordService.comparePass(dto.password, user.password);
     if (!isPassCorrect) {
-      throw new UnauthorizedException(`wrong old password for user id '${dto.userId}'`);
+      throw new UnauthorizedException(`wrong old password for user id ${dto.userId}`);
     }
 
     const hashedPassword = await this.passwordService.hashingPass(dto.newPassword)
@@ -103,7 +103,7 @@ export class UsersService {
       }
     });
     if (user === null) {
-      throw new NotFoundException(`user id '${currUserId}' not found`);
+      throw new NotFoundException(`user id ${currUserId} not found`);
     }
     
     return user
@@ -114,7 +114,7 @@ export class UsersService {
     
     const isPassCorrect = await this.passwordService.comparePass(dto.password, user.password);
     if (!isPassCorrect) {
-      throw new UnauthorizedException(`wrong password for user id '${dto.userId}'`);
+      throw new UnauthorizedException(`wrong password for user id ${dto.userId}`);
     }
 
     if (user.resetPassFlg === 'Y') {
@@ -122,7 +122,7 @@ export class UsersService {
         success: true,
         status: 'RESET_PASSWORD_REQUIRED',
         message: 'Password reset required',
-        userId: user.userId,
+        userEntity: user,
       };
     }
 
@@ -140,7 +140,7 @@ export class UsersService {
     });
 
     if (result.affected === 0) {
-      throw new NotFoundException(`failed to delete, user id '${currUserId}' not found`);
+      throw new NotFoundException(`failed to delete, user id ${currUserId} not found`);
     }
 
     return {
