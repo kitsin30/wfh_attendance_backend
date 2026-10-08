@@ -89,7 +89,7 @@ export class UsersService {
 
     const result = await this.updateUser(
       { userId: dto.userId},
-      { password: hashedPassword, updUid: dto.userId},
+      { password: hashedPassword, updUid: dto.userId, resetPassFlg: 'N'},
       dto.userId
     );
 
