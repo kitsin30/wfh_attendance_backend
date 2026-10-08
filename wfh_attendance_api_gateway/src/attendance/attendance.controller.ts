@@ -19,7 +19,7 @@ export class AttendanceController {
       dest: '../../image_emp',
     }),
   )
-  checkIn(@Body() dto: AttendanceDto, @UploadedFile() file: Express.Multer.File) {
+  checkIn(@Body() dto: AttendanceDto, @UploadedFile() file: any) {
     const attendanceData = {
       userId: dto.userId,
       attendanceImage: file.path,
