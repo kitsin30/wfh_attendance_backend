@@ -100,11 +100,6 @@ export class UsersService {
     const user = await this.userRepository.findOne({
       where: {
         userId: currUserId
-      },
-      select: {
-        userId: true,
-        password: true,
-        resetPassFlg: true
       }
     });
     if (user === null) {
