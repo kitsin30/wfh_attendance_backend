@@ -1,10 +1,11 @@
-import {Body, Controller, Delete, Get, Inject, Param, Post} from '@nestjs/common';
+import {Body, Controller, Delete, Get, Inject, Param, Post, UploadedFile, UseInterceptors} from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { AttendanceDto } from './dto/attendance.dto';
 import { AttendanceSpecificUser } from './dto/attendance-specific-user.dto';
 import { AttendanceSpecificUserRange } from './dto/attendance-specific-user-range.dto';
 import { AttendanceDateSpecificDto } from './dto/attendance-date-specific.dto';
 import { AttendanceListRange } from './dto/attendance-list-range.dto';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @Controller('attendance')
 export class AttendanceController {
@@ -13,10 +14,19 @@ export class AttendanceController {
   ) {}
 
   @Post('check-in')
-  checkIn(@Body() dto: AttendanceDto) {
+  @UseInterceptors(
+    FileInterceptor('attendanceImage', {
+      dest: '../../image_emp',
+    }),
+  )
+  checkIn(@Body() dto: AttendanceDto, @UploadedFile() file: Express.Multer.File) {
+    const attendanceData = {
+      userId: dto.userId,
+      attendanceImage: file.path,
+    };
     return this.attendanceService.send(
       { cmd: 'check_in' },
-      dto,
+      attendanceData,
     );
   }
 

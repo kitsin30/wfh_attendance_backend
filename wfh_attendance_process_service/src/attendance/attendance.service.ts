@@ -3,7 +3,6 @@ import { Injectable, InternalServerErrorException, NotFoundException, ConflictEx
 import { InjectRepository } from '@nestjs/typeorm';
 
 import { Repository } from 'typeorm';
-import { UserEntity } from './entity/user.entity';
 import { AttendanceEntity } from './entity/attendance.entity';
 import { AttendanceSpecificUser } from './dto/attendance-specific-user.dto';
 import { AttendanceDto } from './dto/attendance.dto';
@@ -14,8 +13,6 @@ import { AttendanceListRange } from './dto/attendance-list-range.dto';
 @Injectable()
 export class AttendanceService {
   constructor (
-    @InjectRepository(UserEntity)
-    private readonly userRepository: Repository<UserEntity>,
     @InjectRepository(AttendanceEntity)
     private readonly attendanceRepository: Repository<AttendanceEntity>,
   ) {}
@@ -50,7 +47,7 @@ export class AttendanceService {
     const result = await this.attendanceRepository.update(
       {
         userId: dto.userId,
-        attendanceDate: dto.attendanceDate
+        attendanceDate: currDate
       }, {
         endAttendTms: currDate,
         checkoutImg: dto.attendanceImage

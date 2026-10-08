@@ -8,8 +8,4 @@ export class AttendanceDto {
   @IsString()
   @IsNotEmpty()
   attendanceImage: string;
-
-  @IsDate()
-  @IsNotEmpty()
-  attendanceDate: Date;
 }
