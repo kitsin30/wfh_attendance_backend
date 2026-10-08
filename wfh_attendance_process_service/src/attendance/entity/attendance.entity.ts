@@ -30,7 +30,7 @@ export class AttendanceEntity {
   })
   userId: string;
 
-  @Column({
+  @PrimaryColumn({
     name: 'ATTENDANCE_DATE',
     type: 'date'
   })
@@ -49,4 +49,19 @@ export class AttendanceEntity {
     precision: 3
   })
   endAttendTms: Date;
+
+  @Column({
+    name: 'CHECK_IN_IMG',
+    type: 'varchar',
+    precision: 500
+  })
+  checkinImg: string;
+
+  @Column({
+    name: 'CHECK_OUT_IMG',
+    type: 'varchar',
+    precision: 500
+  })
+  checkoutImg: string;
+
 }

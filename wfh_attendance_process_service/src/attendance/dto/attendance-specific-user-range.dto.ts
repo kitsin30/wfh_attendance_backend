@@ -1,15 +1,12 @@
 import { IsString, IsNotEmpty, IsDate } from 'class-validator';
+import { AttendanceListRange } from './attendance-list-range.dto';
 
-export class AttendanceSpecificUserRange {
+export class AttendanceSpecificUserRange extends AttendanceListRange {
   @IsString()
   @IsNotEmpty()
   userId: string;
 
-  @IsDate()
+  @IsString()
   @IsNotEmpty()
-  attendanceDateStart: Date;
-
-  @IsDate()
-  @IsNotEmpty()
-  attendanceDateEnd: Date;
+  userOrderBy: string
 }

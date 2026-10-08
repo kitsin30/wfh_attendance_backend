@@ -1,13 +1,9 @@
 import { IsString, IsNotEmpty, IsDate } from 'class-validator';
 
-export class AttendanceListRange {
+export class AttendanceDateSpecificDto {
   @IsDate()
   @IsNotEmpty()
-  attendanceDateStart: Date;
-
-  @IsDate()
-  @IsNotEmpty()
-  attendanceDateEnd: Date;
+  attendanceDate: Date;
 
   @IsString()
   @IsNotEmpty()
