@@ -4,7 +4,7 @@ import { AttendanceListRange } from './attendance-list-range.dto';
 export class AttendanceSpecificUserRange extends AttendanceListRange {
   @IsString()
   @IsNotEmpty()
-  userId: string;
+  userIdList: string[];
 
   @IsString()
   @IsNotEmpty()

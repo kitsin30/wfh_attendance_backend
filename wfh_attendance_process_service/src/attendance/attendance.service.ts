@@ -1,4 +1,4 @@
-import { Between, Entity, FindOptionsWhere } from 'typeorm';
+import { Between, Entity, FindManyOptions, FindOptionsWhere, In } from 'typeorm';
 import { Injectable, InternalServerErrorException, NotFoundException, ConflictException, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
@@ -79,55 +79,78 @@ export class AttendanceService {
       throw new NotFoundException(`Attendance for user id '${dto.userId}' for date '${dto.attendanceDate}' not found`);
     }
     
-    return attend
+    return attend;
+  }
+
+  async getAttendance(cond: FindManyOptions<AttendanceEntity>, errMsg: string) {
+    const attend = await this.attendanceRepository.find(cond);
+    
+    if (attend === null) {
+      throw new NotFoundException(`'${errMsg}'`);
+    }
+
+    return attend;
   }
 
   async getSpecificAttendanceUserInDateRange (dto: AttendanceSpecificUserRange) {
-    const attend = await this.attendanceRepository.find({
-      where: {
-        userId: dto.userId,
-        attendanceDate: Between (dto.attendanceDateStart, dto.attendanceDateEnd)
-      },
-      order: {
-        attendanceDate: dto.dateOrderBy === 'ASC'? 'ASC' : 'DESC',
-        userId: dto.userOrderBy === 'ASC'? 'ASC' : 'DESC',
-      }
-    })
+    const errMsg = `Attendance for user id '${dto.userIdList}' for range date between '${dto.attendanceDateStart}' and '${dto.attendanceDateEnd}' not found`;
 
-    if (attend === null) {
-      throw new NotFoundException(`Attendance for user id '${dto.userId}' for range date between '${dto.attendanceDateStart}' and '${dto.attendanceDateEnd}' not found`);
-    }
+    const attend = await this.getAttendance(
+      {
+        where: {
+          userId: In(dto.userIdList),
+          attendanceDate: Between (dto.attendanceDateStart, dto.attendanceDateEnd)
+        },
+        order: {
+          attendanceDate: dto.dateOrderBy === 'ASC'? 'ASC' : 'DESC',
+          userId: dto.userOrderBy === 'ASC'? 'ASC' : 'DESC'
+        }
+      }, errMsg
+    )
     
-    return attend
+    return attend;
   }
 
   async getAllAttendanceForSpecificDate(dto: AttendanceDateSpecificDto) {
-    const attend = await this.attendanceRepository.find({
-      where: {
-        attendanceDate: dto.attendanceDate
-      },
-      order: {
-        attendanceDate: dto.dateOrderBy === 'ASC'? 'ASC' : 'DESC',
-      }
-    })
+    const errMsg = `All Attendance for date '${dto.attendanceDate}' not found`;
 
-    if (attend === null) {
-      throw new NotFoundException(`All Attendance for date '${dto.attendanceDate}' not found`);
-    }
+    const attend = await this.getAttendance(
+      {
+        where: {
+          attendanceDate: dto.attendanceDate
+        },
+        order: {
+          attendanceDate: dto.dateOrderBy === 'ASC'? 'ASC' : 'DESC',
+        }
+      }, errMsg
+    )
+
+    return attend;
   }
 
   async getAllAttendanceForRangeDate(dto: AttendanceListRange) {
-    const attend = await this.attendanceRepository.find({
-      where: {
-        attendanceDate: Between (dto.attendanceDateStart, dto.attendanceDateEnd)
-      },
-      order: {
-        attendanceDate: dto.dateOrderBy === 'ASC'? 'ASC' : 'DESC',
-      }
-    })
+    const errMsg = `All Attendance for range date between '${dto.attendanceDateStart}' and '${dto.attendanceDateEnd}' not found`;
+    const attend = await this.getAttendance(
+      {
+        where: {
+          attendanceDate: Between (dto.attendanceDateStart, dto.attendanceDateEnd)
+        },
+        order: {
+          attendanceDate: dto.dateOrderBy === 'ASC'? 'ASC' : 'DESC',
+        }
+      }, errMsg
+    )
 
+    return attend;
+  }
+
+  async getAllAttendance() {
+    const attend = await this.attendanceRepository.find();
+    
     if (attend === null) {
-      throw new NotFoundException(`All Attendance for range date between '${dto.attendanceDateStart}' and '${dto.attendanceDateEnd}' not found`);
+      throw new NotFoundException(`All Attendance not found`);
     }
+
+    return attend;
   }
 }
