@@ -49,4 +49,9 @@ export class UsersController {
   deleteUser(@Payload() userId: string,) {
     return this.usersService.deleteUser(userId);
   }
+
+  @MessagePattern({ cmd: 'get_user_list' })
+  getUserList() {
+    return this.usersService.getUserList();
+  }
 }

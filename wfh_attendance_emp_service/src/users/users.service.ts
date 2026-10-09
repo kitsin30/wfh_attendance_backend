@@ -148,4 +148,14 @@ export class UsersService {
       message: 'User Successfully deleted'
     };
   }
+
+  async getUserList() {
+    const result = await this.userRepository.find();
+
+    if (result === null) {
+      throw new NotFoundException(`All User not found`);
+    }
+
+    return result;
+  }
 }

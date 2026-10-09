@@ -67,4 +67,12 @@ export class UsersController {
       userId,
     );
   }
+
+  @Get()
+  getUserList() {
+    return this.userService.send(
+      { cmd: 'get_user_list' },
+      {},
+    );
+  }
 }
