@@ -7,7 +7,7 @@ import { AttendanceController } from './attendance.controller';
   imports: [
     ClientsModule.register([
       {
-        name: 'USER_SERVICE',
+        name: 'ATTENDANCE_SERVICE',
         transport: Transport.TCP,
         options: {
           host: '127.0.0.1',

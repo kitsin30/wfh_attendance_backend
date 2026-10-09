@@ -7,6 +7,7 @@ import { AttendanceSpecificUser } from './dto/attendance-specific-user.dto';
 import { AttendanceSpecificUserRange } from './dto/attendance-specific-user-range.dto';
 import { AttendanceDateSpecificDto } from './dto/attendance-date-specific.dto';
 import { AttendanceListRange } from './dto/attendance-list-range.dto';
+import { AttendanceAllRecSpecificUserDto } from './dto/attendance-all-rec-specific-user.dto';
 
 @Controller()
 export class AttendanceController {
@@ -27,6 +28,11 @@ export class AttendanceController {
   @MessagePattern({ cmd: 'get_user_attend' })
   async getUserAttendance(@Payload() dto: AttendanceSpecificUser) {
     return this.attendanceService.getUserAttendance(dto);
+  }
+
+  @MessagePattern({ cmd: 'get_user_all_attend' })
+  async getSpecificAttendanceUser(@Payload() dto: AttendanceAllRecSpecificUserDto) {
+    return this.attendanceService.getSpecificAttendanceUser(dto);
   }
 
   @MessagePattern({ cmd: 'get_user_attend_in_range' })

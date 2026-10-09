@@ -6,6 +6,7 @@ import { AttendanceSpecificUserRange } from './dto/attendance-specific-user-rang
 import { AttendanceDateSpecificDto } from './dto/attendance-date-specific.dto';
 import { AttendanceListRange } from './dto/attendance-list-range.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { AttendanceAllRecSpecificUserDto } from './dto/attendance-all-rec-specific-user.dto';
 
 @Controller('attendance')
 export class AttendanceController {
@@ -42,6 +43,14 @@ export class AttendanceController {
   getUserAttendance(@Body() dto: AttendanceSpecificUser) {
     return this.attendanceService.send(
       { cmd: 'get_user_attend' },
+      dto,
+    );
+  }
+
+  @Post('get-user-all-attend')
+  getSpecificAttendanceUser(@Body() dto: AttendanceAllRecSpecificUserDto) {
+    return this.attendanceService.send(
+      { cmd: 'get_user_all_attend' },
       dto,
     );
   }

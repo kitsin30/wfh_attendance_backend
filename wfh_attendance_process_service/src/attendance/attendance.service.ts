@@ -9,6 +9,7 @@ import { AttendanceDto } from './dto/attendance.dto';
 import { AttendanceSpecificUserRange } from './dto/attendance-specific-user-range.dto';
 import { AttendanceDateSpecificDto } from './dto/attendance-date-specific.dto';
 import { AttendanceListRange } from './dto/attendance-list-range.dto';
+import { AttendanceAllRecSpecificUserDto } from './dto/attendance-all-rec-specific-user.dto';
 
 @Injectable()
 export class AttendanceService {
@@ -86,6 +87,23 @@ export class AttendanceService {
       throw new NotFoundException(`'${errMsg}'`);
     }
 
+    return attend;
+  }
+
+  async getSpecificAttendanceUser (dto: AttendanceAllRecSpecificUserDto) {
+    const errMsg = `Attendance for user id ${dto.userId} not found`;
+
+    const attend = await this.getAttendance(
+      {
+        where: {
+          userId: dto.userId
+        },
+        order: {
+          attendanceDate: dto.dateOrderBy === 'ASC'? 'ASC' : 'DESC',
+        }
+      }, errMsg
+    )
+    
     return attend;
   }
 
