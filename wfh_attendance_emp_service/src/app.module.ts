@@ -25,7 +25,7 @@ import { readFileSync } from 'node:fs';
         database: configService.get<string>('DB_DATABASE'),
 
         autoLoadEntities: true,
-        synchronize: true,
+        synchronize: false,
 
         ssl: {
           ca: readFileSync(configService.get<string>('DB_CA_CERT_PATH')!),
