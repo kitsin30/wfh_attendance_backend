@@ -1,21 +1,15 @@
 import { NestFactory } from '@nestjs/core';
-import { MicroserviceOptions, Transport} from '@nestjs/microservices';
-
 import { AppModule } from './app.module.js';
 
 async function bootstrap() {
-  const app = await NestFactory.createMicroservice<MicroserviceOptions>(
-    AppModule,
-    {
-      transport: Transport.TCP,
-      options: {
-        host: process.env.VITE_SERVICE_HOST ?? '127.0.0.1',
-        port: Number(process.env.VITE_SERVICE_PORT ?? 3000),
-      },
-    },
-  );
+  const app = await NestFactory.create(AppModule);
 
-  await app.listen();
+  app.enableCors();
+
+  await app.listen(
+    Number(process.env.PORT ?? 3000),
+    '127.0.0.1',
+  );
 }
 
 bootstrap();
