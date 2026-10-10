@@ -47,8 +47,8 @@ export class UserEntity {
 
   @Column({
     name: 'USER_LEVEL',
-    type: 'char',
-    precision: 10
+    type: 'number',
+    precision: 1
   })
   userLevel: string;
 
