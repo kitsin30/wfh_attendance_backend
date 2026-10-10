@@ -30,7 +30,7 @@ export class UsersService {
         userLevel: dto.userLevel
       });
 
-      await this.userRepository.save(user);
+      await this.userRepository.insert(user);
       return {
         success: true,
         message: 'User Successfully created'

@@ -5,7 +5,8 @@ export class UserEntity {
   @CreateDateColumn({
     name: 'CREATED_TMS',
     type: 'timestamp',
-    precision: 3
+    precision: 3,
+    default: () => 'CURRENT_TIMESTAMP(3)'
   })
   createdTms: Date;
 
@@ -19,7 +20,9 @@ export class UserEntity {
   @UpdateDateColumn({
     name: 'UPDATED_TMS',
     type: 'timestamp',
-    precision: 3
+    precision: 3,
+    default: () => 'CURRENT_TIMESTAMP(3)',
+    onUpdate: 'CURRENT_TIMESTAMP(3)'
   })
   updatedTms: Date;
 
@@ -41,7 +44,7 @@ export class UserEntity {
     name: 'RESET_PASS_FLG',
     type: 'char',
     precision: 1,
-    default: 'N'
+    default: () => 'N'
   })
   resetPassFlg: string;
 

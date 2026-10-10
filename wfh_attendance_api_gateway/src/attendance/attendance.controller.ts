@@ -1,4 +1,4 @@
-import {Body, Controller, Delete, Get, Inject, Param, Post, UploadedFile, UseInterceptors} from '@nestjs/common';
+import { Body, ConflictException, Controller, Delete, Get, Inject, InternalServerErrorException, Param, Post, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ClientProxy } from '@nestjs/microservices';
 import { AttendanceDto } from './dto/attendance.dto.js';
@@ -7,12 +7,13 @@ import { AttendanceSpecificUserRange } from './dto/attendance-specific-user-rang
 import { AttendanceDateSpecificDto } from './dto/attendance-date-specific.dto.js';
 import { AttendanceListRange } from './dto/attendance-list-range.dto.js';
 import { AttendanceAllRecSpecificUserDto } from './dto/attendance-all-rec-specific-user.dto.js';
+import { catchError, throwError } from 'rxjs';
 
 @Controller('attendance')
 export class AttendanceController {
   constructor(
     @Inject('ATTENDANCE_SERVICE') private readonly attendanceService: ClientProxy,
-  ) {}
+  ) { }
 
   @Post('check-in')
   @UseInterceptors(
@@ -28,6 +29,20 @@ export class AttendanceController {
     return this.attendanceService.send(
       { cmd: 'check_in' },
       attendanceData,
+    ).pipe(
+      catchError((error) => {
+        if (error?.statusCode === 409) {
+          return throwError(
+            () => new ConflictException(error.message),
+          );
+        }
+
+        return throwError(
+          () => new InternalServerErrorException(
+            error?.message || 'Internal server error',
+          ),
+        );
+      })
     );
   }
 
@@ -36,6 +51,20 @@ export class AttendanceController {
     return this.attendanceService.send(
       { cmd: 'check_out' },
       dto,
+    ).pipe(
+      catchError((error) => {
+        if (error?.statusCode === 409) {
+          return throwError(
+            () => new ConflictException(error.message),
+          );
+        }
+
+        return throwError(
+          () => new InternalServerErrorException(
+            error?.message || 'Internal server error',
+          ),
+        );
+      })
     );
   }
 
@@ -44,6 +73,20 @@ export class AttendanceController {
     return this.attendanceService.send(
       { cmd: 'get_user_attend' },
       dto,
+    ).pipe(
+      catchError((error) => {
+        if (error?.statusCode === 409) {
+          return throwError(
+            () => new ConflictException(error.message),
+          );
+        }
+
+        return throwError(
+          () => new InternalServerErrorException(
+            error?.message || 'Internal server error',
+          ),
+        );
+      })
     );
   }
 
@@ -52,6 +95,20 @@ export class AttendanceController {
     return this.attendanceService.send(
       { cmd: 'get_user_all_attend' },
       dto,
+    ).pipe(
+      catchError((error) => {
+        if (error?.statusCode === 409) {
+          return throwError(
+            () => new ConflictException(error.message),
+          );
+        }
+
+        return throwError(
+          () => new InternalServerErrorException(
+            error?.message || 'Internal server error',
+          ),
+        );
+      })
     );
   }
 
@@ -60,6 +117,20 @@ export class AttendanceController {
     return this.attendanceService.send(
       { cmd: 'get_user_attend_in_range' },
       dto,
+    ).pipe(
+      catchError((error) => {
+        if (error?.statusCode === 409) {
+          return throwError(
+            () => new ConflictException(error.message),
+          );
+        }
+
+        return throwError(
+          () => new InternalServerErrorException(
+            error?.message || 'Internal server error',
+          ),
+        );
+      })
     );
   }
 
@@ -68,6 +139,20 @@ export class AttendanceController {
     return this.attendanceService.send(
       { cmd: 'get_all_attend_specific_date' },
       dto,
+    ).pipe(
+      catchError((error) => {
+        if (error?.statusCode === 409) {
+          return throwError(
+            () => new ConflictException(error.message),
+          );
+        }
+
+        return throwError(
+          () => new InternalServerErrorException(
+            error?.message || 'Internal server error',
+          ),
+        );
+      })
     );
   }
 
@@ -76,6 +161,20 @@ export class AttendanceController {
     return this.attendanceService.send(
       { cmd: 'get_all_attend_range_date' },
       dto,
+    ).pipe(
+      catchError((error) => {
+        if (error?.statusCode === 409) {
+          return throwError(
+            () => new ConflictException(error.message),
+          );
+        }
+
+        return throwError(
+          () => new InternalServerErrorException(
+            error?.message || 'Internal server error',
+          ),
+        );
+      })
     );
   }
 
@@ -84,6 +183,20 @@ export class AttendanceController {
     return this.attendanceService.send(
       { cmd: 'get_all_attend' },
       {},
+    ).pipe(
+      catchError((error) => {
+        if (error?.statusCode === 409) {
+          return throwError(
+            () => new ConflictException(error.message),
+          );
+        }
+
+        return throwError(
+          () => new InternalServerErrorException(
+            error?.message || 'Internal server error',
+          ),
+        );
+      })
     );
   }
 }
