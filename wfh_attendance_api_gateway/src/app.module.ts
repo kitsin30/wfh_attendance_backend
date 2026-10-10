@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
-import { UsersModule } from './users/users.module';
-import { AttendancesModule } from './attendance/attendance.module';
+import { UsersModule } from './users/users.module.js';
+import { AttendancesModule } from './attendance/attendance.module.js';
 
 @Module({
   imports: [

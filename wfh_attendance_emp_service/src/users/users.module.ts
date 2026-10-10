@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
-import { UserEntity } from './entity/user.entity';
-import { UsersService } from './users.service';
-import { PasswordService } from './password.service';
-import { UsersController } from './users.controller';
+import { UserEntity } from './entity/user.entity.js';
+import { UsersService } from './users.service.js';
+import { PasswordService } from './password.service.js';
+import { UsersController } from './users.controller.js';
 
 @Module({
   imports: [

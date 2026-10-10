@@ -1,12 +1,12 @@
 import {Body, Controller, Delete, Get, Inject, Param, Post, UploadedFile, UseInterceptors} from '@nestjs/common';
-import { ClientProxy } from '@nestjs/microservices';
-import { AttendanceDto } from './dto/attendance.dto';
-import { AttendanceSpecificUser } from './dto/attendance-specific-user.dto';
-import { AttendanceSpecificUserRange } from './dto/attendance-specific-user-range.dto';
-import { AttendanceDateSpecificDto } from './dto/attendance-date-specific.dto';
-import { AttendanceListRange } from './dto/attendance-list-range.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { AttendanceAllRecSpecificUserDto } from './dto/attendance-all-rec-specific-user.dto';
+import { ClientProxy } from '@nestjs/microservices';
+import { AttendanceDto } from './dto/attendance.dto.js';
+import { AttendanceSpecificUser } from './dto/attendance-specific-user.dto.js';
+import { AttendanceSpecificUserRange } from './dto/attendance-specific-user-range.dto.js';
+import { AttendanceDateSpecificDto } from './dto/attendance-date-specific.dto.js';
+import { AttendanceListRange } from './dto/attendance-list-range.dto.js';
+import { AttendanceAllRecSpecificUserDto } from './dto/attendance-all-rec-specific-user.dto.js';
 
 @Controller('attendance')
 export class AttendanceController {

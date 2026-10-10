@@ -1,13 +1,13 @@
 import { Controller } from '@nestjs/common';
 
 import { MessagePattern, Payload } from '@nestjs/microservices';
-import { AttendanceService } from './attendance.service';
-import { AttendanceDto } from './dto/attendance.dto';
-import { AttendanceSpecificUser } from './dto/attendance-specific-user.dto';
-import { AttendanceSpecificUserRange } from './dto/attendance-specific-user-range.dto';
-import { AttendanceDateSpecificDto } from './dto/attendance-date-specific.dto';
-import { AttendanceListRange } from './dto/attendance-list-range.dto';
-import { AttendanceAllRecSpecificUserDto } from './dto/attendance-all-rec-specific-user.dto';
+import { AttendanceService } from './attendance.service.js';
+import { AttendanceDto } from './dto/attendance.dto.js';
+import { AttendanceSpecificUser } from './dto/attendance-specific-user.dto.js';
+import { AttendanceSpecificUserRange } from './dto/attendance-specific-user-range.dto.js';
+import { AttendanceDateSpecificDto } from './dto/attendance-date-specific.dto.js';
+import { AttendanceListRange } from './dto/attendance-list-range.dto.js';
+import { AttendanceAllRecSpecificUserDto } from './dto/attendance-all-rec-specific-user.dto.js';
 
 @Controller()
 export class AttendanceController {

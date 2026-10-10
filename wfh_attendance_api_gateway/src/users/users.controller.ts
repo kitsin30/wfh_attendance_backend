@@ -1,9 +1,9 @@
 import {Body, Controller, Delete, Get, Inject, Param, Post} from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
-import { UserCredDto } from './dto/user-cred.dto';
-import { UserForgetPassDto } from './dto/user-forget-pass.dto';
-import { UserPassReqDto } from './dto/user-pass-req.dto';
-import { UserResetPassDto } from './dto/user-reset-pass.dto';
+import { UserCredDto } from './dto/user-cred.dto.js';
+import { UserForgetPassDto } from './dto/user-forget-pass.dto.js';
+import { UserPassReqDto } from './dto/user-pass-req.dto.js';
+import { UserResetPassDto } from './dto/user-reset-pass.dto.js';
 
 @Controller('users')
 export class UsersController {

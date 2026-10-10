@@ -3,7 +3,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { readFileSync } from 'node:fs';
-import { AttendanceModule } from './attendance/attendance.module';
+import { AttendanceModule } from './attendance/attendance.module.js';
 
 @Module({
   imports: [

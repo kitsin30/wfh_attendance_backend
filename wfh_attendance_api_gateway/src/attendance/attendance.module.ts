@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 
-import { AttendanceController } from './attendance.controller';
+import { AttendanceController } from './attendance.controller.js';
 
 @Module({
   imports: [

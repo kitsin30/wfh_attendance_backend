@@ -3,13 +3,13 @@ import { Injectable, InternalServerErrorException, NotFoundException, ConflictEx
 import { InjectRepository } from '@nestjs/typeorm';
 
 import { Repository } from 'typeorm';
-import { AttendanceEntity } from './entity/attendance.entity';
-import { AttendanceSpecificUser } from './dto/attendance-specific-user.dto';
-import { AttendanceDto } from './dto/attendance.dto';
-import { AttendanceSpecificUserRange } from './dto/attendance-specific-user-range.dto';
-import { AttendanceDateSpecificDto } from './dto/attendance-date-specific.dto';
-import { AttendanceListRange } from './dto/attendance-list-range.dto';
-import { AttendanceAllRecSpecificUserDto } from './dto/attendance-all-rec-specific-user.dto';
+import { AttendanceEntity } from './entity/attendance.entity.js';
+import { AttendanceSpecificUser } from './dto/attendance-specific-user.dto.js';
+import { AttendanceDto } from './dto/attendance.dto.js';
+import { AttendanceSpecificUserRange } from './dto/attendance-specific-user-range.dto.js';
+import { AttendanceDateSpecificDto } from './dto/attendance-date-specific.dto.js';
+import { AttendanceListRange } from './dto/attendance-list-range.dto.js';
+import { AttendanceAllRecSpecificUserDto } from './dto/attendance-all-rec-specific-user.dto.js';
 
 @Injectable()
 export class AttendanceService {

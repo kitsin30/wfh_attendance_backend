@@ -4,12 +4,12 @@ import { InjectRepository } from '@nestjs/typeorm';
 
 import { Repository } from 'typeorm';
 
-import { UserEntity } from './entity/user.entity';
-import { UserCredDto } from './dto/user-cred.dto';
-import { UserPassReqDto } from './dto/user-pass-req.dto';
-import { UserForgetPassDto } from './dto/user-forget-pass.dto';
-import { PasswordService } from './password.service';
-import { UserResetPassDto } from './dto/user-reset-pass.dto';
+import { UserEntity } from './entity/user.entity.js';
+import { UserCredDto } from './dto/user-cred.dto.js';
+import { UserPassReqDto } from './dto/user-pass-req.dto.js';
+import { UserForgetPassDto } from './dto/user-forget-pass.dto.js';
+import { PasswordService } from './password.service.js';
+import { UserResetPassDto } from './dto/user-reset-pass.dto.js';
 
 @Injectable()
 export class UsersService {

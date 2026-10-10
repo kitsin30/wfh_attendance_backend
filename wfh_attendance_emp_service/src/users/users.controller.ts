@@ -2,11 +2,11 @@ import { Controller } from '@nestjs/common';
 
 import { MessagePattern, Payload } from '@nestjs/microservices';
 
-import { UsersService } from './users.service';
-import { UserCredDto } from './dto/user-cred.dto';
-import { UserForgetPassDto } from './dto/user-forget-pass.dto';
-import { UserPassReqDto } from './dto/user-pass-req.dto';
-import { UserResetPassDto } from './dto/user-reset-pass.dto';
+import { UsersService } from './users.service.js';
+import { UserCredDto } from './dto/user-cred.dto.js';
+import { UserForgetPassDto } from './dto/user-forget-pass.dto.js';
+import { UserPassReqDto } from './dto/user-pass-req.dto.js';
+import { UserResetPassDto } from './dto/user-reset-pass.dto.js';
 
 @Controller()
 export class UsersController {
