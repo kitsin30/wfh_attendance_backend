@@ -1,5 +1,5 @@
 import { Entity, FindOptionsWhere } from 'typeorm';
-import { Injectable, InternalServerErrorException, NotFoundException, ConflictException, UnauthorizedException } from '@nestjs/common';
+import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
 import { Repository } from 'typeorm';
@@ -10,6 +10,7 @@ import { UserPassReqDto } from './dto/user-pass-req.dto.js';
 import { UserForgetPassDto } from './dto/user-forget-pass.dto.js';
 import { PasswordService } from './password.service.js';
 import { UserResetPassDto } from './dto/user-reset-pass.dto.js';
+import { RpcException } from '@nestjs/microservices';
 
 @Injectable()
 export class UsersService {
@@ -37,9 +38,15 @@ export class UsersService {
       };
     } catch(error: any) {
       if (error.code === 'ER_DUP_ENTRY') {
-        throw new ConflictException('User already exists');
+        throw new RpcException({
+          statusCode: 409,
+          message: 'User already exists',
+        });
       }
-      throw new InternalServerErrorException('Failed to save user');
+      throw new RpcException({
+        statusCode: 500,
+        message: 'Failed to save user',
+      });
     }
   }
 
@@ -48,7 +55,10 @@ export class UsersService {
     const result = await this.userRepository.update(condUserEntity, currUserEntity);
 
     if (result.affected === 0) {
-      throw new NotFoundException(`user id ${currUserId} not found`);
+      throw new RpcException({
+        statusCode: 404,
+        message: `user id ${currUserId} not found`,
+      });
     }
 
     return {
@@ -83,13 +93,16 @@ export class UsersService {
 
     const isPassCorrect = await this.passwordService.comparePass(dto.password, user.password);
     if (!isPassCorrect) {
-      throw new UnauthorizedException(`wrong old password for user id ${dto.userId}`);
+      throw new RpcException({
+        statusCode: 401,
+        message: `wrong old password for user id ${dto.userId}`,
+      });
     }
 
     const hashedPassword = await this.passwordService.hashingPass(dto.newPassword)
 
     const result = await this.updateUser(
-      { userId: dto.userId},
+      { userId: dto.userId, resetPassFlg: 'Y'},
       { password: hashedPassword, updUid: dto.userId, resetPassFlg: 'N'},
       dto.userId
     );
@@ -104,7 +117,10 @@ export class UsersService {
       }
     });
     if (user === null) {
-      throw new NotFoundException(`user id ${currUserId} not found`);
+      throw new RpcException({
+        statusCode: 404,
+        message: `user id ${currUserId} not found`,
+      });
     }
     
     return user
@@ -115,7 +131,10 @@ export class UsersService {
     
     const isPassCorrect = await this.passwordService.comparePass(dto.password, user.password);
     if (!isPassCorrect) {
-      throw new UnauthorizedException(`wrong password for user id ${dto.userId}`);
+      throw new RpcException({
+        statusCode: 401,
+        message: `wrong password for user id ${dto.userId}`,
+      });
     }
 
     if (user.resetPassFlg === 'Y') {
@@ -141,7 +160,10 @@ export class UsersService {
     });
 
     if (result.affected === 0) {
-      throw new NotFoundException(`failed to delete, user id ${currUserId} not found`);
+      throw new RpcException({
+        statusCode: 404,
+        message: `failed to delete, user id ${currUserId} not found`,
+      });
     }
 
     return {
@@ -154,7 +176,10 @@ export class UsersService {
     const result = await this.userRepository.find();
 
     if (result === null) {
-      throw new NotFoundException(`All User not found`);
+      throw new RpcException({
+        statusCode: 404,
+        message: `All User not found`,
+      });
     }
 
     return result;

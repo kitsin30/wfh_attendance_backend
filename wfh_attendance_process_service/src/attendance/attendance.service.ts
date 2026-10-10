@@ -1,5 +1,5 @@
-import { Between, Entity, FindManyOptions, FindOptionsWhere, In } from 'typeorm';
-import { Injectable, InternalServerErrorException, NotFoundException, ConflictException, UnauthorizedException } from '@nestjs/common';
+import { Between, FindManyOptions, In } from 'typeorm';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
 import { Repository } from 'typeorm';
@@ -10,6 +10,7 @@ import { AttendanceSpecificUserRange } from './dto/attendance-specific-user-rang
 import { AttendanceDateSpecificDto } from './dto/attendance-date-specific.dto.js';
 import { AttendanceListRange } from './dto/attendance-list-range.dto.js';
 import { AttendanceAllRecSpecificUserDto } from './dto/attendance-all-rec-specific-user.dto.js';
+import { RpcException } from '@nestjs/microservices';
 
 @Injectable()
 export class AttendanceService {
@@ -36,9 +37,15 @@ export class AttendanceService {
       };
     } catch (error: any) {
       if (error.code === 'ER_DUP_ENTRY') {
-        throw new ConflictException('User already attend today');
+        throw new RpcException({
+          statusCode: 409,
+          message: 'User already attend today',
+        });
       }
-      throw new InternalServerErrorException(`Failed to save attendance from user ${dto.userId}`);
+      throw new RpcException({
+        statusCode: 500,
+        message: `Failed to save attendance from user ${dto.userId}`,
+      });
     }
   }
 
@@ -56,7 +63,10 @@ export class AttendanceService {
     );
 
     if (result.affected === 0) {
-      throw new NotFoundException(`Record attendance not found for user id ${dto.userId} not found`);
+      throw new RpcException({
+        statusCode: 404,
+        message: `Record attendance not found for user id ${dto.userId} not found`,
+      });
     }
 
     return {
@@ -74,7 +84,10 @@ export class AttendanceService {
     })
 
     if (attend === null) {
-      throw new NotFoundException(`Attendance for user id ${dto.userId} for date ${dto.attendanceDate} not found`);
+      throw new RpcException({
+        statusCode: 404,
+        message: `Attendance for user id ${dto.userId} for date ${dto.attendanceDate} not found`,
+      });
     }
     
     return attend;
@@ -84,7 +97,10 @@ export class AttendanceService {
     const attend = await this.attendanceRepository.find(cond);
     
     if (attend === null) {
-      throw new NotFoundException(`'${errMsg}'`);
+      throw new RpcException({
+        statusCode: 404,
+        message: `${errMsg}`,
+      });
     }
 
     return attend;
@@ -163,7 +179,10 @@ export class AttendanceService {
     const attend = await this.attendanceRepository.find();
     
     if (attend === null) {
-      throw new NotFoundException(`All Attendance not found`);
+      throw new RpcException({
+        statusCode: 404,
+        message: `All Attendance not found`,
+      });
     }
 
     return attend;
