@@ -26,7 +26,8 @@ export class UsersService {
       const user = this.userRepository.create({
         userId: dto.userId,
         password: hashedPassword,
-        updUid: dto.updUid
+        updUid: dto.updUid,
+        userLevel: dto.userLevel
       });
 
       await this.userRepository.save(user);

@@ -1,4 +1,4 @@
-import { IsString, IsNotEmpty } from 'class-validator';
+import { IsString, IsNotEmpty, IsNumber } from 'class-validator';
 
 export class UserCredDto {
   @IsString()
@@ -12,4 +12,8 @@ export class UserCredDto {
   @IsString()
   @IsNotEmpty()
   updUid: string;
+
+  @IsNumber()
+  @IsNotEmpty()
+  userLevel: number;
 }
