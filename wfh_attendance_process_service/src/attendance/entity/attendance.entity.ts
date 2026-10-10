@@ -1,6 +1,6 @@
 import { Entity, Column, CreateDateColumn, UpdateDateColumn, PrimaryColumn } from "typeorm";
 
-@Entity('USERS')
+@Entity('ATTENDANCE')
 export class AttendanceEntity {
   @CreateDateColumn({
     name: 'CREATED_TMS',
@@ -37,7 +37,7 @@ export class AttendanceEntity {
     name: 'ATTENDANCE_DATE',
     type: 'date'
   })
-  attendanceDate: Date;
+  attendanceDate: string;
 
   @Column({
     name: 'START_ATTEND_TMS',

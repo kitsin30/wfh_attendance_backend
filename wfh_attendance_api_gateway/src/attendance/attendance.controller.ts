@@ -47,10 +47,19 @@ export class AttendanceController {
   }
 
   @Post('check-out')
-  checkOut(@Body() dto: AttendanceDto) {
+  @UseInterceptors(
+    FileInterceptor('attendanceImage', {
+      dest: '../../image_emp',
+    }),
+  )
+  checkOut(@Body() dto: AttendanceDto, @UploadedFile() file: any) {
+    const attendanceData = {
+      userId: dto.userId,
+      attendanceImage: file.path,
+    };
     return this.attendanceService.send(
       { cmd: 'check_out' },
-      dto,
+      attendanceData,
     ).pipe(
       catchError((error) => {
         if (error?.statusCode === 409) {

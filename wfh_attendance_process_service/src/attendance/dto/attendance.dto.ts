@@ -1,4 +1,4 @@
-import { IsString, IsNotEmpty, IsDate } from 'class-validator';
+import { IsString, IsNotEmpty } from 'class-validator';
 
 export class AttendanceDto {
   @IsString()
@@ -9,7 +9,7 @@ export class AttendanceDto {
   @IsNotEmpty()
   attendanceImage: string;
 
-  @IsDate()
+  @IsString()
   @IsNotEmpty()
-  attendanceDate: Date;
+  attendanceDate: string;
 }

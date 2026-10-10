@@ -1,4 +1,4 @@
-import { IsString, IsNotEmpty, IsDate } from 'class-validator';
+import { IsString, IsNotEmpty } from 'class-validator';
 import { AttendanceListRange } from './attendance-list-range.dto.js';
 
 export class AttendanceSpecificUserRange extends AttendanceListRange {

@@ -1,9 +1,9 @@
-import { IsString, IsNotEmpty, IsDate } from 'class-validator';
+import { IsString, IsNotEmpty } from 'class-validator';
 
 export class AttendanceDateSpecificDto {
-  @IsDate()
+  @IsString()
   @IsNotEmpty()
-  attendanceDate: Date;
+  attendanceDate: string;
 
   @IsString()
   @IsNotEmpty()

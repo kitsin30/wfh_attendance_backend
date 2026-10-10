@@ -1,13 +1,13 @@
-import { IsString, IsNotEmpty, IsDate } from 'class-validator';
+import { IsString, IsNotEmpty } from 'class-validator';
 
 export class AttendanceListRange {
-  @IsDate()
+  @IsString()
   @IsNotEmpty()
-  attendanceDateStart: Date;
+  attendanceDateStart: string;
 
-  @IsDate()
+  @IsString()
   @IsNotEmpty()
-  attendanceDateEnd: Date;
+  attendanceDateEnd: string;
 
   @IsString()
   @IsNotEmpty()

@@ -14,23 +14,25 @@ import { RpcException } from '@nestjs/microservices';
 
 @Injectable()
 export class AttendanceService {
-  constructor (
+  constructor(
     @InjectRepository(AttendanceEntity)
     private readonly attendanceRepository: Repository<AttendanceEntity>,
-  ) {}
+  ) { }
 
   async checkIn(dto: AttendanceDto) {
     try {
       const currDate = new Date();
+      const todayDate = currDate.toISOString().split('T')[0];
 
       const attend = this.attendanceRepository.create({
         userId: dto.userId,
-        attendanceDate: currDate,
+        updUid: dto.userId,
+        attendanceDate: todayDate,
         startAttendTms: currDate,
         checkinImg: dto.attendanceImage
       })
 
-      await this.attendanceRepository.save(attend);
+      await this.attendanceRepository.insert(attend);
       return {
         success: true,
         message: 'User Successfully created'
@@ -50,32 +52,42 @@ export class AttendanceService {
   }
 
   async checkOut(dto: AttendanceDto) {
-    const currDate = new Date();
+    try {
+      const currDate = new Date();
+      const todayDate = currDate.toISOString().split('T')[0];
 
-    const result = await this.attendanceRepository.update(
-      {
-        userId: dto.userId,
-        attendanceDate: currDate
-      }, {
+      const result = await this.attendanceRepository.update(
+        {
+          userId: dto.userId,
+          attendanceDate: todayDate
+        }, {
         endAttendTms: currDate,
         checkoutImg: dto.attendanceImage
       }
-    );
+      );
 
-    if (result.affected === 0) {
+      if (result.affected === 0) {
+        throw new RpcException({
+          statusCode: 404,
+          message: `Record attendance not found for user id ${dto.userId} not found`,
+        });
+      }
+
+      return {
+        success: true,
+        message: 'Attendance Successfully updated'
+      };
+    } catch (error: any) {
+      console.log(error);
       throw new RpcException({
-        statusCode: 404,
-        message: `Record attendance not found for user id ${dto.userId} not found`,
+        statusCode: 500,
+        message: `Failed to check out attendance from user ${dto.userId}`,
       });
     }
 
-    return {
-      success: true,
-      message: 'Attendance Successfully updated'
-    };
   }
 
-  async getUserAttendance (dto: AttendanceSpecificUser) {
+  async getUserAttendance(dto: AttendanceSpecificUser) {
     const attend = await this.attendanceRepository.findOne({
       where: {
         userId: dto.userId,
@@ -89,13 +101,13 @@ export class AttendanceService {
         message: `Attendance for user id ${dto.userId} for date ${dto.attendanceDate} not found`,
       });
     }
-    
+
     return attend;
   }
 
   async getAttendance(cond: FindManyOptions<AttendanceEntity>, errMsg: string) {
     const attend = await this.attendanceRepository.find(cond);
-    
+
     if (attend === null) {
       throw new RpcException({
         statusCode: 404,
@@ -106,7 +118,7 @@ export class AttendanceService {
     return attend;
   }
 
-  async getSpecificAttendanceUser (dto: AttendanceAllRecSpecificUserDto) {
+  async getSpecificAttendanceUser(dto: AttendanceAllRecSpecificUserDto) {
     const errMsg = `Attendance for user id ${dto.userId} not found`;
 
     const attend = await this.getAttendance(
@@ -115,30 +127,30 @@ export class AttendanceService {
           userId: dto.userId
         },
         order: {
-          attendanceDate: dto.dateOrderBy === 'ASC'? 'ASC' : 'DESC',
+          attendanceDate: dto.dateOrderBy === 'ASC' ? 'ASC' : 'DESC',
         }
       }, errMsg
     )
-    
+
     return attend;
   }
 
-  async getSpecificAttendanceUserInDateRange (dto: AttendanceSpecificUserRange) {
+  async getSpecificAttendanceUserInDateRange(dto: AttendanceSpecificUserRange) {
     const errMsg = `Attendance for user id ${dto.userIdList} for range date between ${dto.attendanceDateStart} and ${dto.attendanceDateEnd} not found`;
 
     const attend = await this.getAttendance(
       {
         where: {
           userId: In(dto.userIdList),
-          attendanceDate: Between (dto.attendanceDateStart, dto.attendanceDateEnd)
+          attendanceDate: Between(dto.attendanceDateStart, dto.attendanceDateEnd)
         },
         order: {
-          attendanceDate: dto.dateOrderBy === 'ASC'? 'ASC' : 'DESC',
-          userId: dto.userOrderBy === 'ASC'? 'ASC' : 'DESC'
+          attendanceDate: dto.dateOrderBy === 'ASC' ? 'ASC' : 'DESC',
+          userId: dto.userOrderBy === 'ASC' ? 'ASC' : 'DESC'
         }
       }, errMsg
     )
-    
+
     return attend;
   }
 
@@ -151,7 +163,7 @@ export class AttendanceService {
           attendanceDate: dto.attendanceDate
         },
         order: {
-          attendanceDate: dto.dateOrderBy === 'ASC'? 'ASC' : 'DESC',
+          attendanceDate: dto.dateOrderBy === 'ASC' ? 'ASC' : 'DESC',
         }
       }, errMsg
     )
@@ -164,10 +176,10 @@ export class AttendanceService {
     const attend = await this.getAttendance(
       {
         where: {
-          attendanceDate: Between (dto.attendanceDateStart, dto.attendanceDateEnd)
+          attendanceDate: Between(dto.attendanceDateStart, dto.attendanceDateEnd)
         },
         order: {
-          attendanceDate: dto.dateOrderBy === 'ASC'? 'ASC' : 'DESC',
+          attendanceDate: dto.dateOrderBy === 'ASC' ? 'ASC' : 'DESC',
         }
       }, errMsg
     )
@@ -177,7 +189,7 @@ export class AttendanceService {
 
   async getAllAttendance() {
     const attend = await this.attendanceRepository.find();
-    
+
     if (attend === null) {
       throw new RpcException({
         statusCode: 404,
