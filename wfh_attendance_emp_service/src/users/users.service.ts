@@ -79,9 +79,11 @@ export class UsersService {
   }
 
   async updateResetPassFlg(dto: UserPassReqDto) {
+    const hashedPassword = await this.passwordService.hashingPass(dto.password);
+
     const result = await this.updateUser(
       {userId: dto.userId},
-      {resetPassFlg: 'Y', updUid: dto.updUid},
+      {resetPassFlg: 'Y', updUid: dto.updUid, password: hashedPassword},
       dto.userId
     );
 

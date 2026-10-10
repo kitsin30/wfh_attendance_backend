@@ -8,20 +8,49 @@ import { AttendanceDateSpecificDto } from './dto/attendance-date-specific.dto.js
 import { AttendanceListRange } from './dto/attendance-list-range.dto.js';
 import { AttendanceAllRecSpecificUserDto } from './dto/attendance-all-rec-specific-user.dto.js';
 import { catchError, throwError } from 'rxjs';
+import { existsSync, mkdirSync } from 'fs';
+import { extname, join } from 'path';
+import { diskStorage } from 'multer';
 
 @Controller('attendance')
 export class AttendanceController {
+  private readonly imageDirectory: string;
+
   constructor(
     @Inject('ATTENDANCE_SERVICE') private readonly attendanceService: ClientProxy,
-  ) { }
+
+  ) {
+    this.imageDirectory = join(
+      process.cwd(),
+      '..',
+      'image_emp',
+    );
+
+    // Create the folder if it does not exist.
+    if (!existsSync(this.imageDirectory)) {
+      mkdirSync(this.imageDirectory, { recursive: true });
+    }
+  }
 
   @Post('check-in')
   @UseInterceptors(
     FileInterceptor('attendanceImage', {
-      dest: '../../image_emp',
+      storage: diskStorage({
+        destination: (_req, _file, callback) => {
+          callback(null, join(process.cwd(), '..', 'image_emp'));
+        },
+
+        filename: (_req, file, callback) => {
+          const filename =
+            `${Date.now()}-${Math.round(Math.random() * 1e9)}` +
+            extname(file.originalname).toLowerCase();
+
+          callback(null, filename);
+        },
+      }),
     }),
   )
-  checkIn(@Body() dto: AttendanceDto, @UploadedFile() file: any) {
+  checkIn(@Body() dto: AttendanceDto, @UploadedFile() file: Express.Multer.File) {
     const attendanceData = {
       userId: dto.userId,
       attendanceImage: file.path,

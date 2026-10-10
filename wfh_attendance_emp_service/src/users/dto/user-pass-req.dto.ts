@@ -8,4 +8,8 @@ export class UserPassReqDto {
   @IsString()
   @IsNotEmpty()
   updUid: string;
+
+  @IsString()
+  @IsNotEmpty()
+  password: string;
 }
